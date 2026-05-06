@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBD Noé ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        /* Cuadro blanco principal */
+        #gameArea {
+            width: 550px;
+            height: 450px;
+            background-color: #fff;
+            border-radius: 40px; /* Bordes redondeados como la imagen */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* El muñequito (Personaje) */
+        .character {
+            position: absolute;
+            left: 40px;
+            bottom: 80px;
+            width: 100px;
+            z-index: 10;
+        }
+
+        .biu-text {
+            position: absolute;
+            color: #ff4d6d;
+            font-weight: bold;
+            font-size: 1.2rem;
+            opacity: 0;
+            z-index: 11;
+        }
+
+        /* Texto I Love You fuera/debajo del corazón */
+        .i-love-you {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-10%); /* Ajuste para centrar bajo el corazón */
+            font-size: 2.5rem;
+            font-family: 'Georgia', serif;
+            color: #ffb3c1; /* Rosa claro como la imagen */
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        /* Bloques del corazón (Fragmentos) */
+        .fragment {
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            background-color: #d00000; /* Rojo intenso */
+            border: 1px solid silver; /* Detalle del código original */
+            border-radius: 3px;
+            opacity: 0;
+            transform: scale(0);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+        }
+
+        .fragment.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Feliz cumple amigazooo</h1>
+        
+        <div id="gameArea">
+            <div class="biu-text" id="biuText">biu</div>
+            
+            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Smiling%20Face%20with%20Hearts.png" class="character" id="char" alt="personaje">
+
+            <div class="i-love-you" id="loveText">Pasala increible broo</div>
+        </div>
+    </div>
+
+    <script>
+        const gameArea = document.getElementById('gameArea');
+        const biu = document.getElementById('biuText');
+        const love = document.getElementById('loveText');
+        const fragments = [];
+
+        // Matriz para formar el corazón
+        const heartMap = [
+            [0,0,1,1,0,1,1,0,0],
+            [0,1,1,1,1,1,1,1,0],
+            [1,1,1,1,1,1,1,1,1],
+            [1,1,1,1,1,1,1,1,1],
+            [0,1,1,1,1,1,1,1,0],
+            [0,0,1,1,1,1,1,0,0],
+            [0,0,0,1,1,1,0,0,0],
+            [0,0,0,0,1,0,0,0,0]
+        ];
+
+        function init() {
+            const startX = 220;
+            const startY = 80;
+            const size = 26;
+
+            for (let r = 0; r < heartMap.length; r++) {
+                for (let c = 0; c < heartMap[r].length; c++) {
+                    if (heartMap[r][c] === 1) {
+                        const f = document.createElement('div');
+                        f.className = 'fragment';
+                        f.style.left = (startX + c * size) + 'px';
+                        f.style.top = (startY + r * size) + 'px';
+                        f.style.transitionDelay = (r + c) * 0.05 + 's';
+                        gameArea.appendChild(f);
+                        fragments.push(f);
+                    }
+                }
+            }
+            startAnimation();
+        }
+
+        function startAnimation() {
+            // 1. Aparece "biu"
+            setTimeout(() => {
+                biu.style.left = "130px";
+                biu.style.bottom = "160px";
+                biu.style.opacity = 1;
+            }, 500);
+
+            // 2. Aparece el corazón por partes
+            setTimeout(() => {
+                fragments.forEach(f => f.classList.add('visible'));
+            }, 1000);
+
+            // 3. Aparece I Love You debajo
+            setTimeout(() => {
+                love.style.opacity = 1;
+                biu.style.opacity = 0;
+            }, 2500);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
